@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>JWT Token Request</h2>
+
+<label for="jwtToken">Enter JWT Token:</label>
+<input type="text" id="jwtToken" placeholder="Paste JWT token here" style="width: 300px;">
+<br><br>
+
+<button id="sendRequestBtn">Send Request</button>
+
+<div id="result"></div>
+
+<script>
+    document.getElementById('sendRequestBtn').addEventListener('click', function() {
+        const jwtToken = document.getElementById('jwtToken').value;
+
+        if (!jwtToken) {
+            alert('Please enter a JWT token!');
+            return;
+        }
+
+        fetch('http://localhost:5000/security/api/v1/test/current-user', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            })
+            .catch(error => {
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').innerHTML = `<pre>Error: ${error.message}</pre>`;
+            });
+    });
+</script>
+
+</body>
+</html>

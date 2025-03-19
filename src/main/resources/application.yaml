@@ -1,0 +1,45 @@
+server:
+  servlet:
+    context-path: /security/api/v1
+  port: 5000
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+
+spring:
+  application:
+    name: post-service
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/faang
+    driver-class-name: org.postgresql.Driver
+    username: faang
+    password: faang
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 70
+      idle-timeout: 600000
+      connection-test-query: SELECT 1
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        event.merge.entity_copy_observer: allow
+        show_sql: false
+        use_sql_comments: true
+        format_sql: true
+        ddl-auto: none
+  flyway:
+    locations: classpath:db/migration
+    schemas: public
+
+security:
+  jwt:
+    access-secret: "ASDIJIUuhHUHUIIUVFfgff134gguYYlloigbVxseqwty"
+    access-lifetime: 600000
+    refresh-secret: "wenuiuweiGUYGYUVHBXWS112jBUIWCIOJBHJIHtdfGygioiHy6d78d"
+    refresh-lifetime: 86400000
+    auth-header: "Authorization"
+    bearer-prefix: "Bearer "
